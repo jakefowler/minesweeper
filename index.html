@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minesweeper Login</title>
+    <link rel="stylesheet" href="Styles/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+    <body>
+    <div class="container">
+        <h1 class="title">Minesweeper</h1>
+        <div class="newUser">
+            <h2>Create Account</h2>
+            <form action="newUser.php" method="post">
+                Username: <input type="text" name="username" autofocus>
+                <br>
+                Password: <input type="text" name="password">
+                <br>
+                <input type="submit" value="Enter">
+            </form>
+            <div id="alreadyExists"></div>
+        </div>
+        <div class="existingUser">
+            <h2>Login</h2>
+            <form action="existingUser.php" method="post">
+                Username: <input type="text" name="username" autofocus>
+                <br>
+                Password: <input type="text" name="password">
+                <br>
+                <input type="submit" value="Enter">
+            </form>
+            <div id="failedLogin"></div>
+        </div>
+        <div class="footer">
+            <button onclick="window.location.href = 'highscores.php';">View High Scores</button>
+        </div>
+    </div>
+    </body>
+</html>
