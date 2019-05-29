@@ -1,55 +1,54 @@
 .container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-template-rows: 0.5fr 2fr 0.5fr;
     grid-gap: 10px;
     justify-content: center;
     align-items: center;
-    align-content: center;
-    align-self: center;
     background-color: lightgray;
     color: #444;
     text-align: center;
     grid-template-areas:
-        "title title"
-        "newUser existingUser"
-        "footer footer";
+        "title"
+        "content"
+        "footer";
 }
-
+.title, .footer, .gameBoard, .newUser, .existingUser {
+    background-color: #444;
+    color: #fff;
+    padding: 20px;
+    margin: 5px;
+    border-radius: 5px;
+}
 .title {
     grid-area: title;
-    border-radius: 5px;
-    color: #fff;
-    padding: 20px;
     font-size: 200%;
-    background-color: #444;
-}
-
-.newUser {
-    grid-area: newUser;
-    background-color: #444;
-    color: #fff;
-    border-radius: 5px;
-    padding: 20px;
-    font-size: 150%;
-}
-
-.existingUser {
-    grid-area: existingUser;
-    background-color: #444;
-    color: #fff;
-    border-radius: 5px;
-    padding: 20px;
-    font-size: 150%;
 }
 
 .footer {
     grid-area: footer;
-    background-color: #444;
-    color: #fff;
-    border-radius: 5px;
-    padding: 20px;
     font-size: 200%;
+}
+
+.content {
+    grid-area: content;
+    display: grid;
+    font-size: 150%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "newUser existingUser";
+}
+
+.gameBoard {
+    grid-column: 1 / 3;;
+}
+
+.newUser {
+    grid-area: newUser;
+}
+
+.existingUser {
+    grid-area: existingUser;
 }
 
 button, input{
@@ -59,6 +58,16 @@ button, input{
     font-size: 80%;
 }
 
+.gameBoard button{
+   font-size: 100%;
+   padding: 10px 10px; 
+}
+
 button:hover, input:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+table {
+    margin-left:auto;
+    margin-right:auto;
 }

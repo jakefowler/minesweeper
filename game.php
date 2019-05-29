@@ -6,23 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
     <body>
-        <?php
-        include 'models/MinesweeperGame.php';
-        $boardSize = 9;
-        $game = new MinesweeperGame($boardSize);
+        <div class="container">
+            <h1 class="title">Minesweeper</h1>
+            <div class="gameBoard">
+                <?php
+                include 'models/MinesweeperGame.php';
+                $boardSize = 9;
+                $game = new MinesweeperGame($boardSize);
 
-        echo "<div id='gameBoard'><table>";
-        for($i = 0; $i < $boardSize; $i++)
-        {
-            echo "<tr>";
-            for($j = 0; $j < $boardSize; $j++)
-            {
-                echo "<td><button>" . $game->checkSquare($j, $i) . "</button></td>"; 
-            }
-            echo "</tr>";
-        }
+                echo "<table>";
+                for($i = 0; $i < $boardSize; $i++)
+                {
+                    echo "<tr>";
+                    for($j = 0; $j < $boardSize; $j++)
+                    {
+                        echo "<td><button>" . $game->checkSquare($j, $i) . "</button></td>"; 
+                    }
+                    echo "</tr>";
+                }
 
-        echo "</div></table>";
-        ?>
+                echo "</table>";
+                ?>
+            </div>
+            <div class="footer">
+                <button onclick="window.location.href = 'highscores.php';">View High Scores</button>
+            </div>
+        </div>
     </body>
 </html>
