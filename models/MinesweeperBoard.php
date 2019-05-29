@@ -10,8 +10,8 @@ class MinesweeperBoard {
         //Generate the board, algorithm from https://stackoverflow.com/questions/3578456/whats-the-algorithm-behind-minesweeper-generation
         for ($i=0; $i < $numMines; $i++) {
             do {
-                $mine_x = rand($size - 1);
-                $mine_y = rand($size - 1);
+                $mine_x = rand(0, ($size - 1));
+                $mine_y = rand(0, ($size - 1));
             } while ($this->board[$mine_x][$mine_y] < 0);
             for ($x=-1; $x <= 1; $x++) { 
                 for ($y=-1; $y <= 1; $y++) { 

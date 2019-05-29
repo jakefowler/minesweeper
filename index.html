@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Minesweeper Login</title>
-    <link rel="stylesheet" href="Styles/styles.css">
+    <link rel="stylesheet" href="styles/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
     <body>
@@ -10,7 +10,7 @@
         <h1 class="title">Minesweeper</h1>
         <div class="newUser">
             <h2>Create Account</h2>
-            <form action="newUser.php" method="post">
+            <form action="authentication/newUser.php" method="post">
                 Username: <input type="text" name="username" autofocus>
                 <br>
                 Password: <input type="text" name="password">
@@ -21,7 +21,7 @@
         </div>
         <div class="existingUser">
             <h2>Login</h2>
-            <form action="existingUser.php" method="post">
+            <form action="authentication/existingUser.php" method="post">
                 Username: <input type="text" name="username" autofocus>
                 <br>
                 Password: <input type="text" name="password">

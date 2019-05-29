@@ -1,13 +1,13 @@
 <?php
-include_once 'MinesweeperBoard';
+include_once 'MinesweeperBoard.php';
 
 class MinesweeperGame
 {
     private $board;
 
-    public function __construct()
+    public function __construct(int $size)
     {
-        $this->board = new MinesweeperBoard(9, 10);
+        $this->board = new MinesweeperBoard($size, 10);
     }
 
     public function checkSquare(int $x, int $y)
