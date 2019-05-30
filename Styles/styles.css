@@ -1,6 +1,6 @@
 .container {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
     grid-template-rows: 0.5fr 2fr 0.5fr;
     grid-gap: 10px;
     justify-content: center;
@@ -60,7 +60,8 @@ button, input{
 
 .gameBoard button{
    font-size: 100%;
-   padding: 10px 10px; 
+   width: 3em;
+   height: 3em;
 }
 
 button:hover, input:hover {

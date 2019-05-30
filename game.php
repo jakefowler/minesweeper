@@ -29,7 +29,7 @@
                 ?>
             </div>
             <div class="footer">
-                <button onclick="window.location.href = 'highscores.php';">View High Scores</button>
+                <button onclick="window.location.href = 'index.html';">Home</button>
             </div>
         </div>
     </body>
