@@ -2,11 +2,9 @@
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 0.5fr 2fr 0.5fr;
-    grid-gap: 10px;
     justify-content: center;
     align-items: center;
     background-color: lightgray;
-    color: #444;
     text-align: center;
     grid-template-areas:
         "title"
@@ -39,7 +37,7 @@
         "newUser existingUser";
 }
 
-.gameBoard {
+#gameBoard {
     grid-column: 1 / 3;;
 }
 
@@ -58,7 +56,7 @@ button, input{
     font-size: 80%;
 }
 
-.gameBoard button{
+#gameBoard button{
    font-size: 100%;
    width: 3em;
    height: 3em;

@@ -1,5 +1,5 @@
 <?php
-include_once 'MinesweeperBoard.php';
+include_once "MinesweeperBoard.php";
 
 class MinesweeperGame
 {
@@ -19,7 +19,6 @@ class MinesweeperGame
         } else {
             return $result;
         }
-        
     }
 }
 
