@@ -31,8 +31,14 @@ function checkSquare(button)
 
     request({url: '/api/checkSquare.php',
             method: 'POST', 
-            body: JSON.stringify({x: xLoc, y: yLoc})}).then((request) => document.getElementById(button.id).innerText = request);
-    
+            body: JSON.stringify({x: xLoc, y: yLoc})}).then((request) => {
+                if (request) {
+                    document.getElementById(button.id).innerText = request;
+                }
+                else {
+                    document.getElementById(button.id).style.backgroundColor = "darkred";
+                }
+            });
 }
 
 function createBoard(size)
