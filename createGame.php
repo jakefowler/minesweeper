@@ -1,7 +1,7 @@
 <?php
+    session_start();
     include "./models/MinesweeperGame.php";
     $boardSize = 9;
-    $game = new MinesweeperGame($boardSize);
+    $_SESSION['game'] = new MinesweeperGame($boardSize);
     header("Location: game.html");
     exit;
-?>

@@ -58,6 +58,7 @@ button, input{
 
 #gameBoard button{
    font-size: 100%;
+   color: #fff;
    width: 3em;
    height: 3em;
 }
