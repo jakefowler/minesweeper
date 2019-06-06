@@ -30,4 +30,3 @@ class MinesweeperBoard {
         return $this->board[$x][$y];
     }
 }
-?>

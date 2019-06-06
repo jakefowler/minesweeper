@@ -2,10 +2,10 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="dd4765f0-ecda-413c-a132-676634e96dfe" name="minesweeper" url="http://ftpupload.net">
-        <fileTransfer host="ftpupload.net" port="21">
+      <webServer id="80d08200-b952-4e19-9970-8e3a61357cb6" name="Minesweeper" url="http://ftpupload.net">
+        <fileTransfer host="ftpupload.net" port="21" rootFolder="/htdocs">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
           <option name="port" value="21" />
         </fileTransfer>

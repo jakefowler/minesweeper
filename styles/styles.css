@@ -2,19 +2,17 @@
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 0.5fr 2fr 0.5fr;
-    grid-gap: 10px;
     justify-content: center;
     align-items: center;
     background-color: lightgray;
-    color: #444;
     text-align: center;
     grid-template-areas:
         "title"
         "content"
         "footer";
 }
-.title, .footer, .gameBoard, .newUser, .existingUser {
-    background-color: #444;
+.title, .footer, #gameBoard, .newUser, .existingUser {
+    background-color: #666;
     color: #fff;
     padding: 20px;
     margin: 5px;
@@ -39,7 +37,7 @@
         "newUser existingUser";
 }
 
-.gameBoard {
+#gameBoard {
     grid-column: 1 / 3;;
 }
 
@@ -52,16 +50,18 @@
 }
 
 button, input{
-    background-color: #333;
+    background-color: #555;
     border: none;
     color: #fff;
     font-size: 80%;
 }
 
-.gameBoard button{
-   font-size: 100%;
-   width: 3em;
-   height: 3em;
+#gameBoard button{
+   font-size: 150%;
+   color: #fff;
+   width: 50px;
+   height: 50px;
+   font-weight: 800;
 }
 
 button:hover, input:hover {
