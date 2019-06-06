@@ -11,8 +11,8 @@
         "content"
         "footer";
 }
-.title, .footer, .gameBoard, .newUser, .existingUser {
-    background-color: #444;
+.title, .footer, #gameBoard, .newUser, .existingUser {
+    background-color: #666;
     color: #fff;
     padding: 20px;
     margin: 5px;
@@ -50,17 +50,18 @@
 }
 
 button, input{
-    background-color: #333;
+    background-color: #555;
     border: none;
     color: #fff;
     font-size: 80%;
 }
 
 #gameBoard button{
-   font-size: 100%;
+   font-size: 150%;
    color: #fff;
-   width: 3em;
-   height: 3em;
+   width: 50px;
+   height: 50px;
+   font-weight: 800;
 }
 
 button:hover, input:hover {

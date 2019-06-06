@@ -1,44 +1,75 @@
-function checkSquare(button)
+function disableButtons()
 {
-    console.log(button.id);
-    let tempId = button.id.toString();
-    let location = tempId.split("_");
-    let xLoc = location[0];
-    let yLoc = location[1];
-    console.log(xLoc);
-    console.log(yLoc);
+    for(i = 0; i < size; i++)
+    {
+        for(j = 0; j < size; j++)
+        {
+            document.getElementById(i + "_" + j).disabled = true;
+        }
+    } 
+}
 
-    let request = obj => {
-        return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open(obj.method || "GET", obj.url);
-            if (obj.headers) {
-                Object.keys(obj.headers).forEach(key => {
-                    xhr.setRequestHeader(key, obj.headers[key]);
-                });
-            }
-            xhr.onload = () => {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    resolve(xhr.response);
-                } else {
-                    reject(xhr.statusText);
-                }
-            };
-            xhr.onerror = () => reject(xhr.statusText);
-            xhr.send(obj.body);
-        });
-    };
+function checkSquare(event, button)
+{
+    event = event || window.event;
+    event.preventDefault();
+    if (event.button == 2)
+    {
+        if (document.getElementById(button.id).innerText == 'F')
+        {
+            document.getElementById(button.id).innerText = '';
+            document.getElementById(button.id).style.color = "white";
+        }
+        else if (document.getElementById(button.id).innerText == '')
+        {
+            document.getElementById(button.id).innerText = 'F';
+            document.getElementById(button.id).style.color = "darkred";
+        }
+    }
+    else
+    {
+        console.log(button.id);
+        let tempId = button.id.toString();
+        let location = tempId.split("_");
+        let xLoc = location[0];
+        let yLoc = location[1];
+        console.log(xLoc);
+        console.log(yLoc);
 
-    request({url: '/api/checkSquare.php',
-            method: 'POST', 
-            body: JSON.stringify({x: xLoc, y: yLoc})}).then((request) => {
-                if (request) {
-                    document.getElementById(button.id).innerText = request;
+        let request = obj => {
+            return new Promise((resolve, reject) => {
+                let xhr = new XMLHttpRequest();
+                xhr.open(obj.method || "GET", obj.url);
+                if (obj.headers) {
+                    Object.keys(obj.headers).forEach(key => {
+                        xhr.setRequestHeader(key, obj.headers[key]);
+                    });
                 }
-                else {
-                    document.getElementById(button.id).style.backgroundColor = "darkred";
-                }
+                xhr.onload = () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resolve(xhr.response);
+                    } else {
+                        reject(xhr.statusText);
+                    }
+                };
+                xhr.onerror = () => reject(xhr.statusText);
+                xhr.send(obj.body);
             });
+        };
+
+        request({url: '/api/checkSquare.php',
+                method: 'POST', 
+                body: JSON.stringify({x: xLoc, y: yLoc})}).then((request) => {
+                    if (request) {
+                        document.getElementById(button.id).style.color = "white";
+                        document.getElementById(button.id).innerText = request;
+                    }
+                    else {
+                        document.getElementById(button.id).style.backgroundColor = "darkred";
+                        disableButtons();
+                    }
+                });
+    }
 }
 
 function createBoard(size)
@@ -54,7 +85,8 @@ function createBoard(size)
             var cell = document.createElement('td');
             var btn = document.createElement("button");
             btn.id = (i + "_" + j);
-            btn.onclick = function() {checkSquare(this);};
+            btn.addEventListener("click", function() {checkSquare(event, this);}, false);
+            btn.addEventListener("contextmenu", function() {checkSquare(event, this);}, false);
             cell.appendChild(btn);
             row.appendChild(cell);
         }
