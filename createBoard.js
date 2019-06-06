@@ -1,12 +1,52 @@
+var gameBoard = [];
+function changeSquare(squareValue, button) {
+    if (squareValue) {
+        document.getElementById(button.id).style.color = "white";
+        document.getElementById(button.id).innerText = squareValue;
+    }
+    else {
+        document.getElementById(button.id).style.backgroundColor = "darkred";
+        disableButtons();
+    }
+}
+
+async function requestSquareValue(id)
+{
+    let location = id.split("_");
+    let xLoc = location[0];
+    let yLoc = location[1];
+    var squareValue = "";
+
+    let request = obj => {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open(obj.method || "GET", obj.url);
+            if (obj.headers) {
+                Object.keys(obj.headers).forEach(key => {
+                    xhr.setRequestHeader(key, obj.headers[key]);
+                });
+            }
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    resolve(xhr.response);
+                } else {
+                    reject(xhr.statusText);
+                }
+            };
+            xhr.onerror = () => reject(xhr.statusText);
+            xhr.send(obj.body);
+        });
+    };
+
+    squareValue = await request({url: '/api/checkSquare.php',
+            method: 'POST', 
+            body: JSON.stringify({x: xLoc, y: yLoc})});
+    return squareValue;
+}
+
 function disableButtons()
 {
-    for(i = 0; i < size; i++)
-    {
-        for(j = 0; j < size; j++)
-        {
-            document.getElementById(i + "_" + j).disabled = true;
-        }
-    } 
+    gameBoard.forEach(list => list.forEach(button => button.disabled = true));
 }
 
 function checkSquare(event, button)
@@ -28,47 +68,7 @@ function checkSquare(event, button)
     }
     else
     {
-        console.log(button.id);
-        let tempId = button.id.toString();
-        let location = tempId.split("_");
-        let xLoc = location[0];
-        let yLoc = location[1];
-        console.log(xLoc);
-        console.log(yLoc);
-
-        let request = obj => {
-            return new Promise((resolve, reject) => {
-                let xhr = new XMLHttpRequest();
-                xhr.open(obj.method || "GET", obj.url);
-                if (obj.headers) {
-                    Object.keys(obj.headers).forEach(key => {
-                        xhr.setRequestHeader(key, obj.headers[key]);
-                    });
-                }
-                xhr.onload = () => {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        resolve(xhr.response);
-                    } else {
-                        reject(xhr.statusText);
-                    }
-                };
-                xhr.onerror = () => reject(xhr.statusText);
-                xhr.send(obj.body);
-            });
-        };
-
-        request({url: '/api/checkSquare.php',
-                method: 'POST', 
-                body: JSON.stringify({x: xLoc, y: yLoc})}).then((request) => {
-                    if (request) {
-                        document.getElementById(button.id).style.color = "white";
-                        document.getElementById(button.id).innerText = request;
-                    }
-                    else {
-                        document.getElementById(button.id).style.backgroundColor = "darkred";
-                        disableButtons();
-                    }
-                });
+        requestSquareValue(button.id.toString()).then(response => changeSquare(response, button));
     }
 }
 
@@ -76,9 +76,9 @@ function createBoard(size)
 {
     console.log(size);
     var table = document.createElement("table");
-    var gameBoard = [size][size];
     for(i = 0; i < size; i++)
     {
+        gameBoard.push([]);
         var row = document.createElement('tr');
         for(j = 0; j < size; j++)
         {
@@ -87,6 +87,7 @@ function createBoard(size)
             btn.id = (i + "_" + j);
             btn.addEventListener("click", function() {checkSquare(event, this);}, false);
             btn.addEventListener("contextmenu", function() {checkSquare(event, this);}, false);
+            gameBoard[i].push(btn);
             cell.appendChild(btn);
             row.appendChild(cell);
         }
