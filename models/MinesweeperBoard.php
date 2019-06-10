@@ -29,4 +29,9 @@ class MinesweeperBoard {
     {
         return $this->board[$x][$y];
     }
+
+    public function size()
+    {
+        return count($this->board);
+    }
 }
