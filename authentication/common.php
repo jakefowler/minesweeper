@@ -22,5 +22,4 @@ function download($query) {
 		$conn = null;
 	}
 }
-
 ?>
