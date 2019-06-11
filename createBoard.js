@@ -110,7 +110,7 @@ function startTimer()
     let deltaTime = now - startTime;
     let seconds = Math.floor(deltaTime / 1000);
 
-    document.getElementById("timer").innerHTML = "Timer: " + seconds;
+    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(serverTime));
 }
 
 function startInterval()
