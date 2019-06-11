@@ -67,4 +67,9 @@ class MinesweeperGame
             return $this->timeElapsed + (time() - $this->timeUnpaused);
         }
     }
+
+    public function getMadeMoves()
+    {
+        return $this->moves;
+    }
 }
