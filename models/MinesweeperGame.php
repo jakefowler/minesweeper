@@ -58,4 +58,9 @@ class MinesweeperGame
 
         return !$this->gameLost && count($this->moves) >= $minMovesToWin;
     }
+
+    public function getScore()
+    {
+        return $this->timeElapsed();
+    }
 }
