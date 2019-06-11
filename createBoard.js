@@ -2,7 +2,7 @@ var gameBoard = [];
 var startTime;
 var intervalId;
 var started = false;
-var serverTime;
+var serverTime = 0;
 
 var request = obj => {
     return new Promise((resolve, reject) => {
@@ -99,6 +99,8 @@ function createBoard(size)
         table.appendChild(row);
     }
     document.getElementById("gameBoard").appendChild(table);
+    request({url: 'api/getTime.php',
+                method: 'GET'}).then(response => serverTime = response);
 }
 
 function startTimer()
@@ -116,10 +118,6 @@ function startTimer()
 function startInterval()
 {
     intervalId = setInterval(startTimer, 100);
-
-    // request({url: '/api/.php',
-    //         method: 'POST', 
-    //         body: JSON.stringify({})});
 }
 
 function disableButtons()
