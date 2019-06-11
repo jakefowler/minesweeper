@@ -1,7 +1,6 @@
 var gameBoard = [];
 var startTime;
-var gameLost = false;
-var timeInterval;
+var intervalId;
 
 function changeSquare(squareValue, button) {
     if (squareValue) {
@@ -46,12 +45,6 @@ async function requestSquareValue(id)
             method: 'POST', 
             body: JSON.stringify({x: xLoc, y: yLoc})});
     return squareValue;
-}
-
-function disableButtons()
-{
-    clearInterval(timeInterval);
-    gameBoard.forEach(list => list.forEach(button => button.disabled = true));
 }
 
 function checkSquare(event, button)
@@ -111,10 +104,16 @@ function startTimer()
     let seconds = Math.floor(deltaTime / 1000);
 
     document.getElementById("timer").innerHTML = "Timer: " + seconds;
-
 }
 
 function startInterval()
 {
-    timeInterval = setInterval(startTimer, 100);
+    intervalId = setInterval(startTimer, 100);
 }
+
+function disableButtons()
+{
+    clearInterval(intervalId);
+    gameBoard.forEach(list => list.forEach(button => button.disabled = true));
+}
+
