@@ -44,7 +44,7 @@ async function requestSquareValue(id)
     let yLoc = location[1];
     var squareValue = "";
 
-    squareValue = await request({url: '/api/checkSquare.php',
+    squareValue = await request({url: 'api/checkSquare.php',
             method: 'POST', 
             body: JSON.stringify({x: xLoc, y: yLoc})});
     return squareValue;
@@ -130,7 +130,7 @@ function disableButtons()
 
 function close()
 {
-    request({url: '/api/pauseGame.php',
+    request({url: 'api/pauseGame.php',
             method: 'POST', 
             body: JSON.stringify({pause: true})});
 }
