@@ -2,13 +2,17 @@
 <html>
 <head>
     <title>Minesweeper</title>
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/gameStyle.css">
     <script type="text/javascript" src="createBoard.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
     <body>
         <div class="container">
             <h1 class="title">Minesweeper</h1>
+            <div class="gameInfo">
+                <button id="start" onclick=startInterval()>Start</button>
+                <div id="timer">Timer: </div>
+            </div>
             <div id="gameBoard">
                 <script>createBoard(9);</script>
             </div>

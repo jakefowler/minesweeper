@@ -1,4 +1,8 @@
 var gameBoard = [];
+var startTime;
+var gameLost = false;
+var timeInterval;
+
 function changeSquare(squareValue, button) {
     if (squareValue) {
         document.getElementById(button.id).style.color = "white";
@@ -46,6 +50,7 @@ async function requestSquareValue(id)
 
 function disableButtons()
 {
+    clearInterval(timeInterval);
     gameBoard.forEach(list => list.forEach(button => button.disabled = true));
 }
 
@@ -94,4 +99,22 @@ function createBoard(size)
         table.appendChild(row);
     }
     document.getElementById("gameBoard").appendChild(table);
+}
+
+function startTimer()
+{
+    let now = new Date().getTime();
+    if (!startTime){
+        startTime = new Date().getTime();
+    }
+    let deltaTime = now - startTime;
+    let seconds = Math.floor(deltaTime / 1000);
+
+    document.getElementById("timer").innerHTML = "Timer: " + seconds;
+
+}
+
+function startInterval()
+{
+    timeInterval = setInterval(startTimer, 100);
 }
