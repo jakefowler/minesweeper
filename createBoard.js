@@ -2,7 +2,7 @@ var gameBoard = [];
 var startTime;
 var intervalId;
 var started = false;
-var serverTime;
+var serverTime = 0;
 
 var request = obj => {
     return new Promise((resolve, reject) => {
@@ -44,7 +44,7 @@ async function requestSquareValue(id)
     let yLoc = location[1];
     var squareValue = "";
 
-    squareValue = await request({url: '/api/checkSquare.php',
+    squareValue = await request({url: 'api/checkSquare.php',
             method: 'POST', 
             body: JSON.stringify({x: xLoc, y: yLoc})});
     return squareValue;
@@ -99,6 +99,8 @@ function createBoard(size)
         table.appendChild(row);
     }
     document.getElementById("gameBoard").appendChild(table);
+    request({url: 'api/getTime.php',
+                method: 'GET'}).then(response => serverTime = response);
 }
 
 function startTimer()
@@ -110,16 +112,12 @@ function startTimer()
     let deltaTime = now - startTime;
     let seconds = Math.floor(deltaTime / 1000);
 
-    document.getElementById("timer").innerHTML = "Timer: " + seconds;
+    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(serverTime));
 }
 
 function startInterval()
 {
     intervalId = setInterval(startTimer, 100);
-
-    // request({url: '/api/.php',
-    //         method: 'POST', 
-    //         body: JSON.stringify({})});
 }
 
 function disableButtons()
@@ -130,7 +128,7 @@ function disableButtons()
 
 function close()
 {
-    request({url: '/api/pauseGame.php',
+    request({url: 'api/pauseGame.php',
             method: 'POST', 
             body: JSON.stringify({pause: true})});
 }

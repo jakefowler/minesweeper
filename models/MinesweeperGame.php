@@ -61,6 +61,10 @@ class MinesweeperGame
 
     public function getScore()
     {
-        return $this->timeElapsed();
+        if ($this->paused) {
+            return $this->timeElapsed;
+        } else {
+            return $this->timeElapsed + (time() - $this->timeUnpaused);
+        }
     }
 }
