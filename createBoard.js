@@ -1,6 +1,30 @@
 var gameBoard = [];
 var startTime;
 var intervalId;
+var started = false;
+var serverTime;
+
+var request = obj => {
+    return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+        xhr.open(obj.method || "GET", obj.url);
+        if (obj.headers) {
+            Object.keys(obj.headers).forEach(key => {
+                xhr.setRequestHeader(key, obj.headers[key]);
+            });
+        }
+        xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                resolve(xhr.response);
+            } else {
+                reject(xhr.statusText);
+            }
+        };
+        xhr.onerror = () => reject(xhr.statusText);
+        xhr.send(obj.body);
+    });
+};
+
 
 function changeSquare(squareValue, button) {
     if (squareValue) {
@@ -20,27 +44,6 @@ async function requestSquareValue(id)
     let yLoc = location[1];
     var squareValue = "";
 
-    let request = obj => {
-        return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open(obj.method || "GET", obj.url);
-            if (obj.headers) {
-                Object.keys(obj.headers).forEach(key => {
-                    xhr.setRequestHeader(key, obj.headers[key]);
-                });
-            }
-            xhr.onload = () => {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    resolve(xhr.response);
-                } else {
-                    reject(xhr.statusText);
-                }
-            };
-            xhr.onerror = () => reject(xhr.statusText);
-            xhr.send(obj.body);
-        });
-    };
-
     squareValue = await request({url: '/api/checkSquare.php',
             method: 'POST', 
             body: JSON.stringify({x: xLoc, y: yLoc})});
@@ -49,6 +52,10 @@ async function requestSquareValue(id)
 
 function checkSquare(event, button)
 {
+    if (!started){
+        started = true;
+        startInterval();
+    }
     event = event || window.event;
     event.preventDefault();
     if (event.button == 2)
@@ -109,11 +116,22 @@ function startTimer()
 function startInterval()
 {
     intervalId = setInterval(startTimer, 100);
+
+    // request({url: '/api/.php',
+    //         method: 'POST', 
+    //         body: JSON.stringify({})});
 }
 
 function disableButtons()
 {
     clearInterval(intervalId);
     gameBoard.forEach(list => list.forEach(button => button.disabled = true));
+}
+
+function close()
+{
+    request({url: '/api/pauseGame.php',
+            method: 'POST', 
+            body: JSON.stringify({pause: true})});
 }
 
