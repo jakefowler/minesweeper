@@ -18,22 +18,17 @@ class MinesweeperGame
         $this->timeElapsed = 0;
         $this->paused = false;
         $this->timeUnpaused = time();
-
-        error_log("Board size is {$this->board->size()}");
     }
 
     public function checkSquare(int $x, int $y)
     {
         $result = $this->board->getSquare($x, $y);
-
-        error_log("Checking x={$x}, y={$y} = {$result}");
         
         $addMove = true;
 
         foreach ($this->moves as $move) {
             if ($x == $move['x'] && $y == $move['y']) {
                 $addMove = false;
-                //return array($move);
                 break;
             }
         }
@@ -46,56 +41,37 @@ class MinesweeperGame
             $this->gameLost = true;
             return array(array('x' => $x, 'y' => $y, 'result' => false));
         } elseif ($result == 0) {
-            error_log("Result is 0");
             $toreturn = array(array('x' => $x, 'y' => $y, 'result' => $result));
 
-            if ($x > 0) {
+            $toCheck = array(
+                ['x' => $x + 1, 'y' => $y + 1],
+                ['x' => $x + 1, 'y' => $y],
+                ['x' => $x + 1, 'y' => $y - 1],
+                ['x' => $x, 'y' => $y + 1],
+                ['x' => $x, 'y' => $y - 1],
+                ['x' => $x - 1, 'y' => $y + 1],
+                ['x' => $x - 1, 'y' => $y],
+                ['x' => $x - 1, 'y' => $y - 1],
+            );
 
-                if (!$this->board->seen($x - 1, $y)) {
-                    $toreturn = array_merge($toreturn, $this->checkSquare($x - 1, $y));
+            $boardSize = $this->board->size();
+
+            $filterInvalidCoordinates = function($coordinates) use ($boardSize) {
+                return $coordinates['x'] >= 0 && $coordinates['y'] >= 0 && $coordinates['x'] < $boardSize && $coordinates['y'] < $boardSize;
+            };
+
+            $toCheck = array_filter($toCheck, $filterInvalidCoordinates);
+
+            foreach ($toCheck as $coordinate) {
+                if (!$this->board->seen($coordinate['x'], $coordinate['y'])) {
+                    $toreturn = array_merge($toreturn, $this->checkSquare($coordinate['x'], $coordinate['y']));
                 }
-
-                if ($y > 0 && !$this->board->seen($x - 1, $y - 1)) {
-                    $toreturn = array_merge($toreturn, $this->checkSquare($x - 1, $y - 1));
-                }
-
-                if ($y < $this->board->size() - 1 && !$this->board->seen($x - 1, $y + 1)) {
-                    $toreturn = array_merge($toreturn, $this->checkSquare($x - 1, $y + 1));
-                }
-
-                error_log(implode(" ",$toreturn));
-            }
-
-            if ($x < $this->board->size() - 1) {
-
-                if (!$this->board->seen($x + 1, $y)) {
-                    $toreturn = array_merge($toreturn, $this->checkSquare($x + 1, $y));
-                }
-
-                if ($y > 0 && !$this->board->seen($x + 1, $y - 1)) {
-                    $toreturn = array_merge($toreturn, $this->checkSquare($x + 1, $y - 1));
-                }
-
-                if ($y < $this->board->size() - 1 && !$this->board->seen($x + 1, $y + 1)) {
-                    $toreturn = array_merge($toreturn, $this->checkSquare($x + 1, $y + 1));
-                }
-
-                error_log(implode(" ",$toreturn));
-            }
-
-            if ($y > 0 && !$this->board->seen($x, $y - 1)) {
-                $toreturn = array_merge($toreturn, $this->checkSquare($x, $y - 1));
-            }
-
-            if ($y < $this->board->size() - 1 && !$this->board->seen($x, $y + 1)) {
-                $toreturn = array_merge($toreturn, $this->checkSquare($x, $y + 1));
             }
 
             return $toreturn;
         } else {
             return array(array('x' => $x, 'y' => $y, 'result' => $result));
         }
-        //}
     }
 
     public function pause()
