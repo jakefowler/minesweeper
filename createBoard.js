@@ -3,6 +3,9 @@ var startTime;
 var intervalId;
 var started = false;
 var serverTime = 0;
+var numMoves = 0;
+var size = 9;
+var numBombs = 10;
 
 var request = obj => {
     return new Promise((resolve, reject) => {
@@ -24,53 +27,6 @@ var request = obj => {
         xhr.send(obj.body);
     });
 };
-
-function changeSquare(squareValue, button) {
-    if (squareValue) {
-        document.getElementById(button.id).style.color = "white";
-        document.getElementById(button.id).innerText = squareValue;
-        if (squareValue == 0)
-        {
-            let loc = getCoordinatesForId(button.id);
-            if (loc.x > 0)
-            {
-                gameBoard[loc.x - 1][loc.y].click();
-                if (loc.y > 0)
-                {
-                    gameBoard[loc.x - 1][loc.y - 1].click();
-                }
-                if (loc.y < gameBoard.length)
-                {
-                    gameBoard[loc.x - 1][loc.y + 1].click();
-                }
-            }
-            if (loc.x < gameBoard.length)
-            {
-                gameBoard[loc.x + 1][loc.y].click();
-                if (loc.y > 0)
-                {
-                    gameBoard[loc.x + 1][loc.y - 1].click();
-                }
-                if (loc.y < gameBoard.length)
-                {
-                    gameBoard[loc.x + 1][loc.y + 1].click();
-                }
-            }
-            if (loc.y > 0)
-            {
-                gameBoard[loc.x][loc.y - 1].click();
-            }
-            if (loc.y < gameBoard.length)
-            {
-                gameBoard[loc.x][loc.y + 1].click();
-            }
-        }
-    }
-    else {
-        document.getElementById(button.id).style.backgroundColor = "darkred";
-        disableButtons();
-    }
-}
 
 function getCoordinatesForId(id)
 {
@@ -96,7 +52,7 @@ function checkSquare(event, button)
     }
     event = event || window.event;
     event.preventDefault();
-    if (button.innerText != "")
+    if (button.innerText != "" && button.innerText != "F")
     {
         return
     }
@@ -126,6 +82,7 @@ function addMadeMoves(moves)
 
 function createBoard(size)
 {
+    numMoves = 0;
     console.log(size);
     var table = document.createElement("table");
     for(i = 0; i < size; i++)
@@ -182,3 +139,64 @@ function close()
             body: JSON.stringify({pause: true})});
 }
 
+function gameWon()
+{
+    disableButtons();
+    close();
+    console.log("You Won!!");
+}
+
+function changeSquare(squareValue, button) {
+    if (squareValue) {
+        if (button.innerText == "" || button.innerText == "F") 
+        {
+            numMoves++;
+            document.getElementById(button.id).style.color = "white";
+            document.getElementById(button.id).innerText = squareValue;
+            if (squareValue == 0)
+            {
+                let loc = getCoordinatesForId(button.id);
+                if (loc.x > 0)
+                {
+                    gameBoard[loc.x - 1][loc.y].click();
+                    if (loc.y > 0)
+                    {
+                        gameBoard[loc.x - 1][loc.y - 1].click();
+                    }
+                    if (loc.y < gameBoard.length - 1)
+                    {
+                        gameBoard[loc.x - 1][loc.y + 1].click();
+                    }
+                }
+                if (loc.x < gameBoard.length - 1)
+                {
+                    gameBoard[loc.x + 1][loc.y].click();
+                    if (loc.y > 0)
+                    {
+                        gameBoard[loc.x + 1][loc.y - 1].click();
+                    }
+                    if (loc.y < gameBoard.length - 1)
+                    {
+                        gameBoard[loc.x + 1][loc.y + 1].click();
+                    }
+                }
+                if (loc.y > 0)
+                {
+                    gameBoard[loc.x][loc.y - 1].click();
+                }
+                if (loc.y < gameBoard.length - 1)
+                {
+                    gameBoard[loc.x][loc.y + 1].click();
+                }
+            }
+            if (numMoves >= (size * size - numBombs))
+            {
+                gameWon();
+            }
+        }
+    }
+    else {
+        document.getElementById(button.id).style.backgroundColor = "darkred";
+        disableButtons();
+    }
+}
