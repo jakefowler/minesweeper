@@ -25,11 +25,46 @@ var request = obj => {
     });
 };
 
-
 function changeSquare(squareValue, button) {
     if (squareValue) {
         document.getElementById(button.id).style.color = "white";
         document.getElementById(button.id).innerText = squareValue;
+        if (squareValue == 0)
+        {
+            let loc = getCoordinatesForId(button.id);
+            if (loc.x > 0)
+            {
+                gameBoard[loc.x - 1][loc.y].click();
+                if (loc.y > 0)
+                {
+                    gameBoard[loc.x - 1][loc.y - 1].click();
+                }
+                if (loc.y < gameBoard.length)
+                {
+                    gameBoard[loc.x - 1][loc.y + 1].click();
+                }
+            }
+            if (loc.x < gameBoard.length)
+            {
+                gameBoard[loc.x + 1][loc.y].click();
+                if (loc.y > 0)
+                {
+                    gameBoard[loc.x + 1][loc.y - 1].click();
+                }
+                if (loc.y < gameBoard.length)
+                {
+                    gameBoard[loc.x + 1][loc.y + 1].click();
+                }
+            }
+            if (loc.y > 0)
+            {
+                gameBoard[loc.x][loc.y - 1].click();
+            }
+            if (loc.y < gameBoard.length)
+            {
+                gameBoard[loc.x][loc.y + 1].click();
+            }
+        }
     }
     else {
         document.getElementById(button.id).style.backgroundColor = "darkred";
@@ -37,17 +72,20 @@ function changeSquare(squareValue, button) {
     }
 }
 
-async function requestSquareValue(id)
+function getCoordinatesForId(id)
 {
     let location = id.split("_");
     let xLoc = location[0];
     let yLoc = location[1];
-    var squareValue = "";
+    return {x: parseInt(xLoc), y: parseInt(yLoc)};
+}
 
-    squareValue = await request({url: 'api/checkSquare.php',
+async function requestSquareValue(id)
+{
+    loc = getCoordinatesForId(id);
+    return await request({url: 'api/checkSquare.php',
             method: 'POST', 
-            body: JSON.stringify({x: xLoc, y: yLoc})});
-    return squareValue;
+            body: JSON.stringify({x: loc.x, y: loc.y})});
 }
 
 function checkSquare(event, button)
@@ -58,6 +96,10 @@ function checkSquare(event, button)
     }
     event = event || window.event;
     event.preventDefault();
+    if (button.innerText != "")
+    {
+        return
+    }
     if (event.button == 2)
     {
         if (document.getElementById(button.id).innerText == 'F')
@@ -79,7 +121,7 @@ function checkSquare(event, button)
 
 function addMadeMoves(moves)
 {
-    moves.forEach(move => gameBoard[move[0]][move[1]].click()); //id.toString()).then(response => changeSquare(response, gameBoard[move[0]][move[1]])));
+    moves.forEach(move => gameBoard[move[0]][move[1]].click());
 }
 
 function createBoard(size)
