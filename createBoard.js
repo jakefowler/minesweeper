@@ -29,42 +29,6 @@ function changeSquare(squareValue, button) {
     if (squareValue) {
         document.getElementById(button.id).style.color = "white";
         document.getElementById(button.id).innerText = squareValue;
-        if (squareValue == 0)
-        {
-            let loc = getCoordinatesForId(button.id);
-            if (loc.x > 0)
-            {
-                gameBoard[loc.x - 1][loc.y].click();
-                if (loc.y > 0)
-                {
-                    gameBoard[loc.x - 1][loc.y - 1].click();
-                }
-                if (loc.y < gameBoard.length)
-                {
-                    gameBoard[loc.x - 1][loc.y + 1].click();
-                }
-            }
-            if (loc.x < gameBoard.length)
-            {
-                gameBoard[loc.x + 1][loc.y].click();
-                if (loc.y > 0)
-                {
-                    gameBoard[loc.x + 1][loc.y - 1].click();
-                }
-                if (loc.y < gameBoard.length)
-                {
-                    gameBoard[loc.x + 1][loc.y + 1].click();
-                }
-            }
-            if (loc.y > 0)
-            {
-                gameBoard[loc.x][loc.y - 1].click();
-            }
-            if (loc.y < gameBoard.length)
-            {
-                gameBoard[loc.x][loc.y + 1].click();
-            }
-        }
     }
     else {
         document.getElementById(button.id).style.backgroundColor = "darkred";
@@ -115,13 +79,17 @@ function checkSquare(event, button)
     }
     else
     {
-        requestSquareValue(button.id.toString()).then(response => changeSquare(response, button));
+        requestSquareValue(button.id.toString()).then(
+            response => {
+                let moves = JSON.parse(response); 
+                moves.forEach(move => changeSquare(move['result'] + '', document.getElementById(move['x'] + '_' + move['y'])));
+            });
     }
 }
 
 function addMadeMoves(moves)
 {
-    moves.forEach(move => gameBoard[move[0]][move[1]].click());
+    moves.forEach(move => changeSquare(move['result'] + '', document.getElementById(move['x'] + '_' + move['y'])));
 }
 
 function createBoard(size)
