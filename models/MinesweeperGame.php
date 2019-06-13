@@ -23,9 +23,19 @@ class MinesweeperGame
     public function checkSquare(int $x, int $y)
     {
         $result = $this->board->getSquare($x, $y);
+        
+        $addMove = true;
 
-        $this->moves[] = [$x, $y];
-        $this->moves = array_unique($this->moves);
+        foreach ($this->moves as $move) {
+            if ($x == $move[0] && $y == $move[1]) {
+                $addMove = false;
+                break;
+            }
+        }
+
+        if ($addMove) {
+            $this->moves[] = [$x, $y];
+        }
 
         if ($result < 0) {
             $this->gameLost = true;
