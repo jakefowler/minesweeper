@@ -8,4 +8,4 @@ session_start();
 
 $data = json_decode(file_get_contents("php://input"));
 
-echo $_SESSION['game']->checkSquare($data->x,$data->y);
+echo json_encode($_SESSION['game']->checkSquare($data->x,$data->y));
