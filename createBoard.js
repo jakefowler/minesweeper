@@ -1,11 +1,17 @@
-var gameBoard = [];
-var startTime;
-var intervalId;
-var started = false;
-var serverTime = 0;
-var numMoves = 0;
-var size = 9;
-var numBombs = 10;
+var game;
+
+function Game(size)
+{
+    this.size = size;
+    this.numBombs = size + 1;
+    this.numMoves = 0;
+    this.started = false;
+    this.serverTime = 0;
+    this.board = [];
+    this.startTime;
+    this.intervalId;
+    this.movesToWin = size * size - this.numBombs;
+}
 
 var request = obj => {
     return new Promise((resolve, reject) => {
@@ -46,8 +52,8 @@ async function requestSquareValue(id)
 
 function checkSquare(event, button)
 {
-    if (!started){
-        started = true;
+    if (!game.started){
+        game.started = true;
         startInterval();
     }
     event = event || window.event;
@@ -77,17 +83,17 @@ function checkSquare(event, button)
 
 function addMadeMoves(moves)
 {
-    moves.forEach(move => gameBoard[move[0]][move[1]].click());
+    moves.forEach(move => game.board[move[0]][move[1]].click());
 }
 
 function createBoard(size)
 {
-    numMoves = 0;
+    game = new Game(size);
     console.log(size);
     var table = document.createElement("table");
     for(i = 0; i < size; i++)
     {
-        gameBoard.push([]);
+        game.board.push([]);
         var row = document.createElement('tr');
         for(j = 0; j < size; j++)
         {
@@ -96,7 +102,7 @@ function createBoard(size)
             btn.id = (i + "_" + j);
             btn.addEventListener("click", function() {checkSquare(event, this);}, false);
             btn.addEventListener("contextmenu", function() {checkSquare(event, this);}, false);
-            gameBoard[i].push(btn);
+            game.board[i].push(btn);
             cell.appendChild(btn);
             row.appendChild(cell);
         }
@@ -104,7 +110,7 @@ function createBoard(size)
     }
     document.getElementById("gameBoard").appendChild(table);
     request({url: 'api/getTime.php',
-                method: 'GET'}).then(response => serverTime = response);
+                method: 'GET'}).then(response => game.serverTime = response);
     request({url: 'api/getMadeMoves.php',
                 method: 'GET'}).then(response => addMadeMoves(JSON.parse(response)));
 }
@@ -112,24 +118,24 @@ function createBoard(size)
 function startTimer()
 {
     let now = new Date().getTime();
-    if (!startTime){
-        startTime = new Date().getTime();
+    if (!game.startTime){
+        game.startTime = new Date().getTime();
     }
-    let deltaTime = now - startTime;
+    let deltaTime = now - game.startTime;
     let seconds = Math.floor(deltaTime / 1000);
 
-    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(serverTime));
+    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(game.serverTime));
 }
 
 function startInterval()
 {
-    intervalId = setInterval(startTimer, 100);
+    game.intervalId = setInterval(startTimer, 100);
 }
 
 function disableButtons()
 {
-    clearInterval(intervalId);
-    gameBoard.forEach(list => list.forEach(button => button.disabled = true));
+    clearInterval(game.intervalId);
+    game.board.forEach(list => list.forEach(button => button.disabled = true));
 }
 
 function close()
@@ -150,7 +156,7 @@ function changeSquare(squareValue, button) {
     if (squareValue) {
         if (button.innerText == "" || button.innerText == "F") 
         {
-            numMoves++;
+            game.numMoves++;
             document.getElementById(button.id).style.color = "white";
             document.getElementById(button.id).innerText = squareValue;
             if (squareValue == 0)
@@ -158,38 +164,38 @@ function changeSquare(squareValue, button) {
                 let loc = getCoordinatesForId(button.id);
                 if (loc.x > 0)
                 {
-                    gameBoard[loc.x - 1][loc.y].click();
+                    game.board[loc.x - 1][loc.y].click();
                     if (loc.y > 0)
                     {
-                        gameBoard[loc.x - 1][loc.y - 1].click();
+                        game.board[loc.x - 1][loc.y - 1].click();
                     }
-                    if (loc.y < gameBoard.length - 1)
+                    if (loc.y < game.board.length - 1)
                     {
-                        gameBoard[loc.x - 1][loc.y + 1].click();
+                        game.board[loc.x - 1][loc.y + 1].click();
                     }
                 }
-                if (loc.x < gameBoard.length - 1)
+                if (loc.x < game.board.length - 1)
                 {
-                    gameBoard[loc.x + 1][loc.y].click();
+                    game.board[loc.x + 1][loc.y].click();
                     if (loc.y > 0)
                     {
-                        gameBoard[loc.x + 1][loc.y - 1].click();
+                        game.board[loc.x + 1][loc.y - 1].click();
                     }
-                    if (loc.y < gameBoard.length - 1)
+                    if (loc.y < game.board.length - 1)
                     {
-                        gameBoard[loc.x + 1][loc.y + 1].click();
+                        game.board[loc.x + 1][loc.y + 1].click();
                     }
                 }
                 if (loc.y > 0)
                 {
-                    gameBoard[loc.x][loc.y - 1].click();
+                    game.board[loc.x][loc.y - 1].click();
                 }
-                if (loc.y < gameBoard.length - 1)
+                if (loc.y < game.board.length - 1)
                 {
-                    gameBoard[loc.x][loc.y + 1].click();
+                    game.board[loc.x][loc.y + 1].click();
                 }
             }
-            if (numMoves >= (size * size - numBombs))
+            if (game.numMoves >= game.movesToWin)
             {
                 gameWon();
             }
