@@ -8,4 +8,4 @@ session_start();
 
 $data = json_decode(file_get_contents("php://input"));
 
-echo json_encode($_SESSION['game']->getMoves());
+echo json_encode($_SESSION['game']->getMadeMoves());

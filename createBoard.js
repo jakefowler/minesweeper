@@ -77,6 +77,11 @@ function checkSquare(event, button)
     }
 }
 
+function addMadeMoves(moves)
+{
+    moves.forEach(move => gameBoard[move[0]][move[1]].click()); //id.toString()).then(response => changeSquare(response, gameBoard[move[0]][move[1]])));
+}
+
 function createBoard(size)
 {
     console.log(size);
@@ -101,6 +106,8 @@ function createBoard(size)
     document.getElementById("gameBoard").appendChild(table);
     request({url: 'api/getTime.php',
                 method: 'GET'}).then(response => serverTime = response);
+    request({url: 'api/getMadeMoves.php',
+                method: 'GET'}).then(response => addMadeMoves(JSON.parse(response)));
 }
 
 function startTimer()
