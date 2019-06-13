@@ -1,0 +1,7 @@
+CREATE TABLE scores (
+  id INT NOT NULL AUTO_INCREMENT,
+	username VARCHAR(150),
+	score BIGINT,
+	date_played datetime DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY(id)
+);

@@ -12,7 +12,7 @@ class DBController
             return;
 
         try {
-            self::$dbconn = new PDO('mysql:host=< INSERT HOST >;dbname=< INSERT DB >', "< INSERT USER NAME >", "< INSERT PASSOWORD >");
+            self::$dbconn = new PDO('mysql:host=localhost;dbname=se2', "student", "weber");
             self::$initialized = true;
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
@@ -20,37 +20,31 @@ class DBController
         }
     }
 
-    public static function saveGame(MinesweeperGame $game)
+    public static function saveGame(MinesweeperGame $game, $username)
     {
         self::initialize();
-        // if ($game->gameWon()) {
-        //     $name = $gameController->getName();
-        //     $score = $gameController->getGuesses();
+        if ($game->gameWon()) {
+            $score = $game->getScore();
 
-        //     $stmt = self::$dbconn->prepare("INSERT INTO `scores` (`NAME`, `SCORE`) VALUES (?, ?)");
-        //     $stmt->bindParam(1, $name);
-        //     $stmt->bindParam(2, $score);
+            $stmt = self::$dbconn->prepare("INSERT INTO `scores` (`NAME`, `SCORE`) VALUES (?, ?)");
+            $stmt->bindParam(1, $username);
+            $stmt->bindParam(2, $score);
 
-        //     $stmt->execute();
-
-        //     $stmt = self::$dbconn->prepare("SELECT MAX(ID) FROM scores");
-        //     $stmt->execute();
-
-        //     $gameController->setID($stmt->fetchColumn());
-        // }
+            $stmt->execute();
+        }
     }
 
     public static function getHighScores($limit)
     {
         self::initialize();
-        // $stmt = self::$dbconn->prepare("SELECT ID, NAME, SCORE, DATE, 1+(SELECT count(*) from scores a WHERE a.Score < b.Score) as RANK FROM `scores` b ORDER BY `SCORE` LIMIT ".$limit);
+         $stmt = self::$dbconn->prepare("SELECT ID, NAME, SCORE, DATE, 1+(SELECT count(*) from scores a WHERE a.Score < b.Score) as RANK FROM `scores` b ORDER BY `SCORE` LIMIT ".$limit);
 
-        // $stmt->execute();
+         $stmt->execute();
 
-        // return $stmt->fetchAll();
+         return $stmt->fetchAll();
     }
 
-    public static function getGameRank(MinesweeperGame $game)
+    /*public static function getGameRank(MinesweeperGame $game)
     {
         self::initialize();
         // if (!is_null($game->getID())) {
@@ -71,7 +65,7 @@ class DBController
         // $stmt->execute();
 
         // return $stmt->fetchColumn();
-    }
+    }*/
 
     public static function authenticate($username, $hash)
     {
