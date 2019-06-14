@@ -137,7 +137,11 @@ function startInterval()
 }
 
 function setTimer(seconds) {
-    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(game.serverTime));
+    document.getElementById("timer").innerHTML = "Timer: " + secondsToTimestamp(seconds + parseInt(game.serverTime));
+}
+
+function secondsToTimestamp(seconds) {
+    return Math.floor(seconds / 60) + ":" + ("0" + (seconds % 60)).slice(-2);
 }
 
 function disableButtons()
