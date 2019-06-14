@@ -1,8 +1,17 @@
-var gameBoard = [];
-var startTime;
-var intervalId;
-var started = false;
-var serverTime = 0;
+var game;
+
+function Game(size)
+{
+    this.size = size;
+    this.numBombs = size + 1;
+    this.numMoves = 0;
+    this.started = false;
+    this.serverTime = 0;
+    this.board = [];
+    this.startTime;
+    this.intervalId;
+    this.movesToWin = size * size - this.numBombs;
+}
 
 var request = obj => {
     return new Promise((resolve, reject) => {
@@ -25,17 +34,6 @@ var request = obj => {
     });
 };
 
-function changeSquare(squareValue, button) {
-    if (squareValue) {
-        document.getElementById(button.id).style.color = "white";
-        document.getElementById(button.id).innerText = squareValue;
-    }
-    else {
-        document.getElementById(button.id).style.backgroundColor = "darkred";
-        disableButtons();
-    }
-}
-
 function getCoordinatesForId(id)
 {
     let location = id.split("_");
@@ -54,13 +52,13 @@ async function requestSquareValue(id)
 
 function checkSquare(event, button)
 {
-    if (!started){
-        started = true;
+    if (!game.started){
+        game.started = true;
         startInterval();
     }
     event = event || window.event;
     event.preventDefault();
-    if (button.innerText != "")
+    if (button.innerText != "" && button.innerText != "F")
     {
         return
     }
@@ -94,11 +92,12 @@ function addMadeMoves(moves)
 
 function createBoard(size)
 {
+    game = new Game(size);
     console.log(size);
     var table = document.createElement("table");
     for(i = 0; i < size; i++)
     {
-        gameBoard.push([]);
+        game.board.push([]);
         var row = document.createElement('tr');
         for(j = 0; j < size; j++)
         {
@@ -107,7 +106,7 @@ function createBoard(size)
             btn.id = (i + "_" + j);
             btn.addEventListener("click", function() {checkSquare(event, this);}, false);
             btn.addEventListener("contextmenu", function() {checkSquare(event, this);}, false);
-            gameBoard[i].push(btn);
+            game.board[i].push(btn);
             cell.appendChild(btn);
             row.appendChild(cell);
         }
@@ -115,7 +114,7 @@ function createBoard(size)
     }
     document.getElementById("gameBoard").appendChild(table);
     request({url: 'api/getTime.php',
-                method: 'GET'}).then(response => serverTime = response);
+                method: 'GET'}).then(response => game.serverTime = response);
     request({url: 'api/getMadeMoves.php',
                 method: 'GET'}).then(response => addMadeMoves(JSON.parse(response)));
 }
@@ -123,24 +122,24 @@ function createBoard(size)
 function startTimer()
 {
     let now = new Date().getTime();
-    if (!startTime){
-        startTime = new Date().getTime();
+    if (!game.startTime){
+        game.startTime = new Date().getTime();
     }
-    let deltaTime = now - startTime;
+    let deltaTime = now - game.startTime;
     let seconds = Math.floor(deltaTime / 1000);
 
-    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(serverTime));
+    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(game.serverTime));
 }
 
 function startInterval()
 {
-    intervalId = setInterval(startTimer, 100);
+    game.intervalId = setInterval(startTimer, 100);
 }
 
 function disableButtons()
 {
-    clearInterval(intervalId);
-    gameBoard.forEach(list => list.forEach(button => button.disabled = true));
+    clearInterval(game.intervalId);
+    game.board.forEach(list => list.forEach(button => button.disabled = true));
 }
 
 function close()
@@ -150,3 +149,28 @@ function close()
             body: JSON.stringify({pause: true})});
 }
 
+function gameWon()
+{
+    disableButtons();
+    close();
+    console.log("You Won!!");
+}
+
+function changeSquare(squareValue, button) {
+    if (squareValue) {
+        if (button.innerText == "" || button.innerText == "F") 
+        {
+            game.numMoves++;
+            document.getElementById(button.id).style.color = "white";
+            document.getElementById(button.id).innerText = squareValue;
+            if (game.numMoves >= game.movesToWin)
+            {
+                gameWon();
+            }
+        }
+    }
+    else {
+        document.getElementById(button.id).style.backgroundColor = "darkred";
+        disableButtons();
+    }
+}
