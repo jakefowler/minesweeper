@@ -114,7 +114,7 @@ function createBoard(size)
     }
     document.getElementById("gameBoard").appendChild(table);
     request({url: 'api/getTime.php',
-                method: 'GET'}).then(response => game.serverTime = response);
+                method: 'GET'}).then(response => {game.serverTime = response; setTimer(0);});
     request({url: 'api/getMadeMoves.php',
                 method: 'GET'}).then(response => addMadeMoves(JSON.parse(response)));
 }
@@ -128,12 +128,16 @@ function startTimer()
     let deltaTime = now - game.startTime;
     let seconds = Math.floor(deltaTime / 1000);
 
-    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(game.serverTime));
+    setTimer(seconds);
 }
 
 function startInterval()
 {
     game.intervalId = setInterval(startTimer, 100);
+}
+
+function setTimer(seconds) {
+    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(game.serverTime));
 }
 
 function disableButtons()
