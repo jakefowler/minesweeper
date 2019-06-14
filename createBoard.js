@@ -80,14 +80,14 @@ function checkSquare(event, button)
         requestSquareValue(button.id.toString()).then(
             response => {
                 let moves = JSON.parse(response); 
-                moves.forEach(move => changeSquare(move['result'] + '', document.getElementById(move['x'] + '_' + move['y'])));
+                moves.forEach(move => changeSquare(move['result'], game.board[move['x']][move['y']]));
             });
     }
 }
 
 function addMadeMoves(moves)
 {
-    moves.forEach(move => changeSquare(move['result'] + '', document.getElementById(move['x'] + '_' + move['y'])));
+    moves.forEach(move => changeSquare(move['result'], game.board[move['x']][move['y']]));
 }
 
 function createBoard(size)
@@ -157,7 +157,7 @@ function gameWon()
 }
 
 function changeSquare(squareValue, button) {
-    if (squareValue) {
+    if ((squareValue || squareValue === 0) && squareValue >= 0) {
         if (button.innerText == "" || button.innerText == "F") 
         {
             game.numMoves++;
