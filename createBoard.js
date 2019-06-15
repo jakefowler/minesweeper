@@ -77,13 +77,17 @@ function checkSquare(event, button)
     }
     else
     {
-        requestSquareValue(button.id.toString()).then(response => changeSquare(response, button));
+        requestSquareValue(button.id.toString()).then(
+            response => {
+                let moves = JSON.parse(response); 
+                moves.forEach(move => changeSquare(move['result'], game.board[move['x']][move['y']]));
+            });
     }
 }
 
 function addMadeMoves(moves)
 {
-    moves.forEach(move => game.board[move[0]][move[1]].click());
+    moves.forEach(move => changeSquare(move['result'], game.board[move['x']][move['y']]));
 }
 
 function createBoard(size)
@@ -110,7 +114,7 @@ function createBoard(size)
     }
     document.getElementById("gameBoard").appendChild(table);
     request({url: 'api/getTime.php',
-                method: 'GET'}).then(response => game.serverTime = response);
+                method: 'GET'}).then(response => {game.serverTime = response; setTimer(0);});
     request({url: 'api/getMadeMoves.php',
                 method: 'GET'}).then(response => addMadeMoves(JSON.parse(response)));
 }
@@ -124,12 +128,20 @@ function startTimer()
     let deltaTime = now - game.startTime;
     let seconds = Math.floor(deltaTime / 1000);
 
-    document.getElementById("timer").innerHTML = "Timer: " + (seconds + parseInt(game.serverTime));
+    setTimer(seconds);
 }
 
 function startInterval()
 {
     game.intervalId = setInterval(startTimer, 100);
+}
+
+function setTimer(seconds) {
+    document.getElementById("timer").innerHTML = "Timer: " + secondsToTimestamp(seconds + parseInt(game.serverTime));
+}
+
+function secondsToTimestamp(seconds) {
+    return Math.floor(seconds / 60) + ":" + ("0" + (seconds % 60)).slice(-2);
 }
 
 function disableButtons()
@@ -153,48 +165,12 @@ function gameWon()
 }
 
 function changeSquare(squareValue, button) {
-    if (squareValue) {
+    if ((squareValue || squareValue === 0) && squareValue >= 0) {
         if (button.innerText == "" || button.innerText == "F") 
         {
             game.numMoves++;
             document.getElementById(button.id).style.color = "white";
             document.getElementById(button.id).innerText = squareValue;
-            if (squareValue == 0)
-            {
-                let loc = getCoordinatesForId(button.id);
-                if (loc.x > 0)
-                {
-                    game.board[loc.x - 1][loc.y].click();
-                    if (loc.y > 0)
-                    {
-                        game.board[loc.x - 1][loc.y - 1].click();
-                    }
-                    if (loc.y < game.board.length - 1)
-                    {
-                        game.board[loc.x - 1][loc.y + 1].click();
-                    }
-                }
-                if (loc.x < game.board.length - 1)
-                {
-                    game.board[loc.x + 1][loc.y].click();
-                    if (loc.y > 0)
-                    {
-                        game.board[loc.x + 1][loc.y - 1].click();
-                    }
-                    if (loc.y < game.board.length - 1)
-                    {
-                        game.board[loc.x + 1][loc.y + 1].click();
-                    }
-                }
-                if (loc.y > 0)
-                {
-                    game.board[loc.x][loc.y - 1].click();
-                }
-                if (loc.y < game.board.length - 1)
-                {
-                    game.board[loc.x][loc.y + 1].click();
-                }
-            }
             if (game.numMoves >= game.movesToWin)
             {
                 gameWon();
