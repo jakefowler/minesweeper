@@ -182,3 +182,10 @@ function changeSquare(squareValue, button) {
         disableButtons();
     }
 }
+
+function logOut()
+{
+    request({url: 'api/logOut.php',
+            method: 'POST'});
+    window.location.replace("index.html");
+}

@@ -47,7 +47,7 @@
 
 .footer {
     grid-area: footer;
-    font-size: 200%;
+    font-size: 150%;
 }
 
 button, input{
