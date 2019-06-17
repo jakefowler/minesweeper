@@ -15,21 +15,20 @@
 .title, .footer, #gameBoard, .gameInfo {
     background-color: #666;
     color: #fff;
-    padding: 20px;
-    margin: 5px;
-    border-radius: 5px;
+    padding: .7em;
+    margin: .2em;
+    border-radius: .2em;
+    font-size: 1.5em;
 }
 
 .title {
     grid-area: title;
-    font-size: 200%;
 }
 
 .gameInfo {
     grid-area: gameInfo;
     display: grid;
     grid-template-areas: "start timer";
-    font-size: 150%;
     align-items: center;
 }
 
@@ -47,21 +46,22 @@
 
 .footer {
     grid-area: footer;
-    font-size: 150%;
 }
 
 button, input{
     background-color: #555;
     border: none;
     color: #fff;
-    font-size: 80%;
+    font-size: .8em;
+    font-family: Arial;
+    padding: .5em;
 }
 
 #gameBoard button{
-   font-size: 150%;
+   font-size: 1em;
    color: #fff;
-   width: 50px;
-   height: 50px;
+   width: 2em;
+   height: 2em;
    font-weight: 800;
 }
 
@@ -70,6 +70,22 @@ button:hover, input:hover {
 }
 
 table {
-    margin-left:auto;
-    margin-right:auto;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+td, tr {
+    height: 100%;
+}
+
+@media (max-width: 550px) {
+    #gameBoard button {
+        font-size: .9em;
+    }
+}
+
+@media (max-width: 450px) {
+    #gameBoard button {
+        font-size: .5em;
+    }
 }
