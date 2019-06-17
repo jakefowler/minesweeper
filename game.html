@@ -23,5 +23,19 @@
                 <button onclick="window.location.href = 'createGame.php';">Play Again</button>
             </div>
         </div>
+        <div id="winModal" class="modal">
+            <div class="modal-content">
+                <h1>Congratulations, You Win!</h1>
+                <button onclick=logOut()>Log Out</button>
+                <button onclick="window.location.href = 'createGame.php';">Play Again</button>
+            </div>
+        </div>
+        <div id="lossModal" class="modal">
+            <div class="modal-content">
+                <h1>Sorry, You Lost!</h1>
+                <button onclick=logOut()>Log Out</button>
+                <button onclick="window.location.href = 'createGame.php';">Play Again</button>
+            </div>
+        </div>
     </body>
 </html>
