@@ -23,6 +23,21 @@ function download($query) {
 	}
 }
 
+function upload($query) {
+	global $servername, $username, $password, $dbname;
+
+	try {
+		$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$sql = $query;
+		$conn->exec($sql);
+    } catch(PDOException $e) {
+	    echo $sql . "<br>" . $e->getMessage();
+    } finally {
+    	$conn = null;
+    }
+}
+
 function strongRandomBytes($byteCount) {
 	## https://stackoverflow.com/questions/637278/what-is-the-best-way-to-generate-a-random-key-within-php
     $fp = @fopen('/dev/urandom','rb');
