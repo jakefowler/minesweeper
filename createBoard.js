@@ -133,7 +133,10 @@ function startTimer()
 
 function startInterval()
 {
-    game.intervalId = setInterval(startTimer, 100);
+    game.intervalId = setInterval(startTimer, 300);
+    request({url: 'api/pauseGame.php',
+            method: 'POST', 
+            body: JSON.stringify({pause: false})});
 }
 
 function setTimer(seconds) {
