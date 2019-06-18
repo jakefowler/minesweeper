@@ -51,5 +51,11 @@ function strongRandomBytes($byteCount) {
     return null;
 }
 
+function passwordHash($password, $rawSalt) {
+	// salt must be raw bytes and the returned derived key is raw bytes
+	$rawDK = hash_pbkdf2("sha256", $password, $rawSalt, 1024, 32, true);
+	return $rawDK;
+}
+
 
 ?>
