@@ -160,10 +160,21 @@ function close()
             body: JSON.stringify({pause: true})});
 }
 
+function showModal(won) {
+    if (won) {
+        document.getElementById("winModal").style.display = "block";
+        document.getElementById("winModal").classList.add("fadeIn");
+    } else {
+        document.getElementById("lossModal").style.display = "block";
+        document.getElementById("lossModal").classList.add("fadeIn");
+    }
+}
+
 function gameWon()
 {
     disableButtons();
     close();
+    showModal(true);
     console.log("You Won!!");
 }
 
@@ -183,6 +194,8 @@ function changeSquare(squareValue, button) {
     else {
         document.getElementById(button.id).style.backgroundColor = "darkred";
         disableButtons();
+        close();
+        showModal(false);
     }
 }
 
