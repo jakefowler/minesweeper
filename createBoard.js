@@ -134,9 +134,7 @@ function startTimer()
 function startInterval()
 {
     game.intervalId = setInterval(startTimer, 300);
-    request({url: 'api/pauseGame.php',
-            method: 'POST', 
-            body: JSON.stringify({pause: false})});
+    pauseGame(false);
 }
 
 function setTimer(seconds) {
@@ -153,11 +151,16 @@ function disableButtons()
     game.board.forEach(list => list.forEach(button => button.disabled = true));
 }
 
-function close()
+function pauseGame(boolVal)
 {
     request({url: 'api/pauseGame.php',
             method: 'POST', 
-            body: JSON.stringify({pause: true})});
+            body: JSON.stringify({pause: boolVal})});
+}
+
+function close()
+{
+   pauseGame(true); 
 }
 
 function showModal(won) {
@@ -204,4 +207,10 @@ function logOut()
     request({url: 'api/logOut.php',
             method: 'POST'});
     window.location.replace("index.html");
+}
+
+function leaveToHighScore()
+{
+    pauseGame(true);
+    window.location.replace("highscores.php");
 }
