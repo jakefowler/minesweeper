@@ -26,18 +26,23 @@ class DBController
         if ($game->gameWon()) {
             $score = $game->getScore();
 
-            $stmt = self::$dbconn->prepare("INSERT INTO `scores` (`NAME`, `SCORE`) VALUES (?, ?)");
+            $stmt = self::$dbconn->prepare("INSERT INTO `scores` (`username`, `score`) VALUES (?, ?)");
             $stmt->bindParam(1, $username);
             $stmt->bindParam(2, $score);
 
             $stmt->execute();
+
+            if (!$stmt) {
+                echo "\nPDO::errorInfo():\n";
+                print_r(self::$dbconn->errorInfo());
+            }
         }
     }
 
     public static function getHighScores($limit)
     {
         self::initialize();
-         $stmt = self::$dbconn->prepare("SELECT ID, NAME, SCORE, DATE, 1+(SELECT count(*) from scores a WHERE a.Score < b.Score) as RANK FROM `scores` b ORDER BY `SCORE` LIMIT ".$limit);
+         $stmt = self::$dbconn->prepare("SELECT id, username, score, date_played, 1+(SELECT count(*) from scores a WHERE a.Score < b.Score) as RANK FROM `scores` b ORDER BY `score` LIMIT ".$limit);
 
          $stmt->execute();
 

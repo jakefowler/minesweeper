@@ -164,6 +164,8 @@ function gameWon()
 {
     disableButtons();
     close();
+    request({url: 'api/gameWon.php', method: 'GET',});
+    showModal(true);
     console.log("You Won!!");
 }
 
