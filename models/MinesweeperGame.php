@@ -16,7 +16,7 @@ class MinesweeperGame
         $this->moves = [];
         $this->gameLost = false;
         $this->timeElapsed = 0;
-        $this->paused = false;
+        $this->paused = true;
         $this->timeUnpaused = time();
     }
 
