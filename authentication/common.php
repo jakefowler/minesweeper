@@ -22,4 +22,19 @@ function download($query) {
 		$conn = null;
 	}
 }
+
+function strongRandomBytes($byteCount) {
+	## https://stackoverflow.com/questions/637278/what-is-the-best-way-to-generate-a-random-key-within-php
+    $fp = @fopen('/dev/urandom','rb');
+    if ($fp !== FALSE) {
+    	$raw = @fread($fp,$byteCount);
+        //$key = bin2hex($raw);
+        $key = $raw;
+        @fclose($fp);
+        return $key;
+    }
+    return null;
+}
+
+
 ?>
