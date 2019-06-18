@@ -27,7 +27,7 @@ function main() {
 	$iterations = 1024;
 	$length = 32;
 	$raw_output = true;
-	$rawHash = hash_pbkdf2($algo, $pass, $rawSalt, $iterations, $length, $raw_output);
+	$rawHash = passwordHash($pass, $rawSalt);
 	$hash = bin2hex($rawHash);
 	
 	echo "password: ".$hash." salt: ".$salt."<br>\n";
@@ -35,10 +35,12 @@ function main() {
 	
 	if (sizeof($data) == 0) {
 		// create a new user
-		#$sql = "insert into user VALUES ('.$user.', '.$hash.', '.$salt.');";
-		#upload($sql);
+		$sql = "insert into user VALUES ('".$user."', '".$hash."', '".$salt."');";
+		upload($sql);
+		echo "Your account has been successfully created :D<br>\n";
 	} else {
 		// report that the username has already been taken
+		echo "That username has already been taken :(<br>\n";
 	}
 }
 
