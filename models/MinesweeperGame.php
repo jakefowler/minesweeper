@@ -23,15 +23,54 @@ class MinesweeperGame
     public function checkSquare(int $x, int $y)
     {
         $result = $this->board->getSquare($x, $y);
+        
+        $addMove = true;
 
-        $this->moves[] = [$x, $y];
-        $this->moves = array_unique($this->moves);
+        foreach ($this->moves as $move) {
+            if ($x == $move['x'] && $y == $move['y']) {
+                $addMove = false;
+                break;
+            }
+        }
+
+        if ($addMove) {
+            $this->moves[] = array('x' => $x, 'y' => $y, 'result' => $result);
+        }    
 
         if ($result < 0) {
             $this->gameLost = true;
-            return false;
+            return array(array('x' => $x, 'y' => $y, 'result' => false));
+        } elseif ($result == 0) {
+            $toreturn = array(array('x' => $x, 'y' => $y, 'result' => $result));
+
+            $toCheck = array(
+                ['x' => $x + 1, 'y' => $y + 1],
+                ['x' => $x + 1, 'y' => $y],
+                ['x' => $x + 1, 'y' => $y - 1],
+                ['x' => $x, 'y' => $y + 1],
+                ['x' => $x, 'y' => $y - 1],
+                ['x' => $x - 1, 'y' => $y + 1],
+                ['x' => $x - 1, 'y' => $y],
+                ['x' => $x - 1, 'y' => $y - 1],
+            );
+
+            $boardSize = $this->board->size();
+
+            $filterInvalidCoordinates = function($coordinates) use ($boardSize) {
+                return $coordinates['x'] >= 0 && $coordinates['y'] >= 0 && $coordinates['x'] < $boardSize && $coordinates['y'] < $boardSize;
+            };
+
+            $toCheck = array_filter($toCheck, $filterInvalidCoordinates);
+
+            foreach ($toCheck as $coordinate) {
+                if (!$this->board->seen($coordinate['x'], $coordinate['y'])) {
+                    $toreturn = array_merge($toreturn, $this->checkSquare($coordinate['x'], $coordinate['y']));
+                }
+            }
+
+            return $toreturn;
         } else {
-            return $result;
+            return array(array('x' => $x, 'y' => $y, 'result' => $result));
         }
     }
 
@@ -66,5 +105,10 @@ class MinesweeperGame
         } else {
             return $this->timeElapsed + (time() - $this->timeUnpaused);
         }
+    }
+
+    public function getMadeMoves()
+    {
+        return $this->moves;
     }
 }
