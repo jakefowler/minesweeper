@@ -23,7 +23,7 @@ function download($query) {
 	}
 }
 
-function upload($query) {
+function upload($query, $debug = false) {
 	global $servername, $username, $password, $dbname;
 
 	try {
@@ -31,8 +31,12 @@ function upload($query) {
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$sql = $query;
 		$conn->exec($sql);
+		return true;
     } catch(PDOException $e) {
-	    echo $sql . "<br>" . $e->getMessage();
+	    if ($debug) {
+	    	echo $sql . "<br>" . $e->getMessage();
+	    }
+	    return false;
     } finally {
     	$conn = null;
     }
