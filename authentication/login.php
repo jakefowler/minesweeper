@@ -11,12 +11,18 @@ function goodLogin($username) {
 	$body = new stdClass;
 	$body->type = "login";
 	$body->success = true;
+	$body->username = $username;
 	$json->auth = $body;
 	echo json_encode($json);
 }
 
-function badLogin() {
-	#echo "wrong username or password</br>\n";
+function badLogin($username) {
+	$body = new stdClass;
+	$body->type = "login";
+	$body->success = false;
+	$body->username = $username;
+	$json->auth = $body;
+	echo json_encode($json);
 }
 
 function main() {
