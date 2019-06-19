@@ -8,11 +8,15 @@ require 'common.php';
 
 function goodLogin($username) {
 	$_SESSION['username'] = $username;
-	echo "Welcome ".$username."</br>\n";
+	$body = new stdClass;
+	$body->type = "login";
+	$body->success = true;
+	$json->auth = $body;
+	echo json_encode($json);
 }
 
 function badLogin() {
-	echo "wrong username or password</br>\n";
+	#echo "wrong username or password</br>\n";
 }
 
 function main() {
@@ -20,8 +24,8 @@ function main() {
 	$user = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
 	$pass = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
 
-	echo "username: ".$user."</br>\n";
-	echo "password: ".$pass."</br>\n";
+	#echo "username: ".$user."</br>\n";
+	#echo "password: ".$pass."</br>\n";
 
 	$qry = "SELECT salt FROM user WHERE username = '".$user."';";
 	#echo $qry."<br/>\n";
