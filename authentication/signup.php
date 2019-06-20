@@ -6,8 +6,8 @@ require __DIR__.'/common.php';
 
 function main() {
 	$data = json_decode(file_get_contents("php://input"));
-	$user = $data->username;
-	$pass = $data->password;
+	$user = filter_var($data->username, FILTER_SANITIZE_STRING);
+	$pass = filter_var($data->password, FILTER_SANITIZE_STRING);
 
 	#$userh = bin2hex($user);
 	#$passh = bin2hex($pass);
