@@ -16,7 +16,7 @@ function main() {
 	$salt = bin2hex($rawSalt);
 
 	$sql = "select username from user where username = '".$user."';";
-	download($sql);
+	$data = download($sql);
 	
 	$rawHash = passwordHash($pass, $rawSalt);
 	$hash = bin2hex($rawHash);
