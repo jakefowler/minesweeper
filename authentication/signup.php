@@ -1,11 +1,13 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
 require __DIR__.'/common.php';
 
 
 function main() {
-	$user = $_POST["username"];
-	$pass = $_POST["password"];
+	$data = json_decode(file_get_contents("php://input"));
+	$user = $data->username;
+	$pass = $data->password;
 
 	#$userh = bin2hex($user);
 	#$passh = bin2hex($pass);
@@ -28,6 +30,8 @@ function main() {
 		$sql = "insert into user VALUES ('".$user."', '".$hash."', '".$salt."');";
 		if (upload($sql)) {
 			$body->success = true;
+			session_start();
+			$_SESSION['username'] = $user;
 		}
 	}
 	$json->auth = $body;
@@ -35,7 +39,6 @@ function main() {
 	
 	echo $jsonstr;
 }
-
 
 main();
 

@@ -81,3 +81,8 @@ button:hover, input:hover {
             "existingUser";
     }
 }
+
+.error {
+    font-size: .8em;
+    color: darkred;
+}
