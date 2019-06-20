@@ -42,7 +42,7 @@ class DBController
     public static function getHighScores($limit)
     {
         self::initialize();
-         $stmt = self::$dbconn->prepare("SELECT id, username, score, date_played, 1+(SELECT count(*) from scores a WHERE a.Score < b.Score) as RANK FROM `scores` b ORDER BY `score` LIMIT ".$limit);
+         $stmt = self::$dbconn->prepare("SELECT id, username, score, date_played, 1+(SELECT count(*) from scores a WHERE a.Score < b.Score) as rank FROM `scores` b ORDER BY `score` LIMIT ".$limit);
 
          $stmt->execute();
 
