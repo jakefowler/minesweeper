@@ -3,8 +3,11 @@
 #$_SESSION['username'] = filter_var($_POST[username], FILTER_SANITIZE_STRING);
 #header("Location: ../createGame.php");
 #exit;
-
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
 require 'common.php';
+
+
 
 function goodLogin($username) {
 	$_SESSION['username'] = $username;
@@ -27,8 +30,9 @@ function badLogin($username) {
 
 function main() {
 	session_start();
-	$user = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
-	$pass = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+	$data = json_decode(file_get_contents("php://input"));
+	$user = filter_var($data->username, FILTER_SANITIZE_STRING);
+	$pass = filter_var($data->password, FILTER_SANITIZE_STRING);
 
 	#echo "username: ".$user."</br>\n";
 	#echo "password: ".$pass."</br>\n";
@@ -56,7 +60,6 @@ function main() {
 	}
 }
 
-main();
-
+main()
 ?>
 
