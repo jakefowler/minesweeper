@@ -7,6 +7,7 @@ function Game(size)
     this.numMoves = 0;
     this.started = false;
     this.serverTime = 0;
+    this.seconds;
     this.board = [];
     this.startTime;
     this.intervalId;
@@ -125,10 +126,10 @@ function startTimer()
     if (!game.startTime){
         game.startTime = new Date().getTime();
     }
-    let deltaTime = now - game.startTime;
-    let seconds = Math.floor(deltaTime / 1000);
+    deltaTime = now - game.startTime;
+    game.seconds = Math.floor(deltaTime / 1000);
 
-    setTimer(seconds);
+    setTimer(game.seconds);
 }
 
 function startInterval()
@@ -179,7 +180,7 @@ function gameWon()
     close();
     request({url: 'api/gameWon.php', method: 'GET'});
     showModal(true);
-    console.log("You Won!!");
+    document.getElementById("winMessage").innerHTML = "Congratulations, you won in<br>" + secondsToTimestamp(game.seconds + parseInt(game.serverTime)) + "!";
 }
 
 function changeSquare(squareValue, button) {

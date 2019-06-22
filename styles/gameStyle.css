@@ -148,3 +148,11 @@ td, tr {
     width: 40%;
     text-align: center;
 }
+
+.modal-content h1 {
+    font-size: .8em;
+}
+
+.modal-content button {
+    font-size: .6em;
+}
