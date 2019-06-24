@@ -70,5 +70,28 @@ function newUser()
     submit(username, password, 'authentication/signup.php');
 }
 
+function enterEventHandler(event)
+{
+    if (event && event.keyCode == 13)
+    {
+        event.preventDefault();
+        if (event.target.id == "newUsername" || event.target.id == "newUserPassword")
+        {
+            document.getElementById("newUserBtn").click();
+        }
+        if (event.target.id == "existingUsername" || event.target.id == "existingPassword")
+        {
+            document.getElementById("existingUserBtn").click();
+        }
+    }
+}
+
+function addEnterEvent()
+{
+    document.getElementById("newUsername").addEventListener("keyup", enterEventHandler, false);
+    document.getElementById("newUserPassword").addEventListener("keyup", enterEventHandler, false);
+    document.getElementById("existingUsername").addEventListener("keyup", enterEventHandler, false);
+    document.getElementById("existingPassword").addEventListener("keyup", enterEventHandler, false);
+}
 
 

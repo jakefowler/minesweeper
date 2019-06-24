@@ -20,7 +20,7 @@
                     <br>
                     Password<br><input type="password" id="newUserPassword">
                     <br>
-                    <input type="button" value="Enter" onclick=newUser()>
+                    <input type="button" id="newUserBtn" value="Enter" onclick=newUser()>
                     <p class="error" id="newUserStatus"></p>
                 </form>
             </div>
@@ -31,7 +31,7 @@
                     <br>
                     Password<br><input type="password" id="existingPassword">
                     <br>
-                    <input type="button" value="Enter" onclick=existingUser()>
+                    <input type="button" id="existingUserBtn" value="Enter" onclick=existingUser()>
                     <p class="error" id="existingUserStatus"></p>
                 </form>
             </div>
@@ -41,4 +41,5 @@
         </div>
     </div>
     </body>
+    <script>addEnterEvent();</script>
 </html>
