@@ -59,7 +59,12 @@ function existingUser()
     document.getElementById("existingUserStatus").innerHTML = "";
     let username = document.getElementById("existingUsername").value;
     let password = document.getElementById("existingPassword").value;
-    submit(username, password, 'authentication/login.php');
+    if (password.length > 3){
+        submit(username, password, 'authentication/login.php');
+    }
+    else {
+        document.getElementById("existingUserStatus").innerHTML = "Please enter a longer password";
+    }
 }
 
 function newUser()
@@ -67,7 +72,12 @@ function newUser()
     document.getElementById("newUserStatus").innerHTML = "";
     let username = document.getElementById("newUsername").value;
     let password = document.getElementById("newUserPassword").value;
-    submit(username, password, 'authentication/signup.php');
+    if (password.length > 3){
+        submit(username, password, 'authentication/signup.php');
+    }
+    else {
+        document.getElementById("newUserStatus").innerHTML = "Please enter a longer password";
+    }
 }
 
 function enterEventHandler(event)
