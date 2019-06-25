@@ -3,38 +3,43 @@
 <head>
     <title>Minesweeper Login</title>
     <link rel="stylesheet" href="styles/mainStyle.css">
+    <script type="text/javascript" src="sha256.js"></script>
+    <script type="text/javascript" src="submit.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
     <body>
     <div class="container">
-        <h1 class="title">Minesweeper</h1>
+        <div class="title">
+            <h1>Minesweeper</h1>
+        </div>
         <div class="content">
             <div class="newUser">
-                <h2>Create Account</h2>
-                <form action="authentication/signup.php" method="post">
-                    Username<br><input type="text" name="username" autofocus>
+                <h3>Create Account</h3>
+                <form>
+                    Username<br><input type="text" id="newUsername">
                     <br>
-                    Password<br><input type="text" name="password">
+                    Password<br><input type="password" id="newUserPassword">
                     <br>
-                    <input type="submit" value="Enter">
+                    <input type="button" id="newUserBtn" value="Enter" onclick=newUser()>
+                    <p class="error" id="newUserStatus"></p>
                 </form>
-                <div id="alreadyExists"></div>
             </div>
             <div class="existingUser">
-                <h2>Login</h2>
-                <form action="authentication/login.php" method="post">
-                    Username<br><input type="text" name="username" autofocus>
+                <h3>Login</h3>
+                <form>
+                    Username<br><input type="text" id="existingUsername" autofocus>
                     <br>
-                    Password<br><input type="text" name="password">
+                    Password<br><input type="password" id="existingPassword">
                     <br>
-                    <input type="submit" value="Enter">
+                    <input type="button" id="existingUserBtn" value="Enter" onclick=existingUser()>
+                    <p class="error" id="existingUserStatus"></p>
                 </form>
-                <div id="failedLogin"></div>
             </div>
         </div>
         <div class="footer">
-            <button onclick="window.location.href = 'highscores.php';">View High Scores</button>
+            <button onclick="window.location.href = 'highscores.html';">View High Scores</button>
         </div>
     </div>
     </body>
+    <script>addEnterEvent();</script>
 </html>

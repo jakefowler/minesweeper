@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>High Scores</title>
+    <link rel="stylesheet" href="styles/gameStyle.css">
+    <script type="text/javascript" src="createBoard.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="container">
+    <div class="title">
+        <h2>High Scores</h2>
+    </div>
+    <div id="gameBoard">
+        <ul id="highScoreList">
+        <script>
+            request({url: 'api/getHighScores.php',
+                method: 'POST',
+                body: JSON.stringify({limit: 9})}).then(response => {
+                    let scores = JSON.parse(response);
+                    scores.forEach(score => {
+                        let li = document.createElement('li');
+                        li.innerText = `${score['rank']} ${score['username']} - ${secondsToTimestamp(score['score'])} - ${score['date_played']}`;
+                        document.getElementById("highScoreList").appendChild(li);
+                    });
+            });
+        </script>
+        </ul>
+    </div>
+    <div class="footer">
+        <button onclick="window.location.href = '.';">Log Out</button>
+        <button onclick="window.location.href = 'createGame.php';">Play Game</button>
+    </div>
+</div>
+</body>
+</html>

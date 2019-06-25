@@ -8,7 +8,9 @@
 </head>
     <body onunload="close()">
         <div class="container">
-            <h1 class="title">Minesweeper</h1>
+            <div class="title">
+                <h2>Minesweeper</h2>
+            </div>
             <div class="gameInfo">
                 <button id="start" onclick=startInterval()>Start</button>
                 <div id="timer">Timer: </div>
@@ -17,7 +19,25 @@
                 <script>createBoard(9);</script>
             </div>
             <div class="footer">
-                <button onclick="window.location.href = 'index.html';">Home</button>
+                <button onclick=logOut()>Log Out</button>
+                <button onclick="window.location.href = 'createGame.php';">Play Again</button>
+                <button onclick=leaveToHighScore()>High Scores</button>
+            </div>
+        </div>
+        <div id="winModal" class="modal">
+            <div class="modal-content">
+                <h1 id="winMessage"></h1>
+                <button onclick=logOut()>Log Out</button>
+                <button onclick="window.location.href = 'createGame.php';">Play Again</button>
+                <button onclick=leaveToHighScore()>High Scores</button>
+            </div>
+        </div>
+        <div id="lossModal" class="modal">
+            <div class="modal-content">
+                <h1>Sorry, You Lost!</h1>
+                <button onclick=logOut()>Log Out</button>
+                <button onclick="window.location.href = 'createGame.php';">Play Again</button>
+                <button onclick=leaveToHighScore()>High Scores</button>
             </div>
         </div>
     </body>

@@ -1,7 +1,6 @@
 .container {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 0.5fr 2fr 0.5fr;
     justify-content: center;
     align-items: center;
     background-color: lightgray;
@@ -15,25 +14,23 @@
 .title, .footer, #gameBoard, .newUser, .existingUser {
     background-color: #666;
     color: #fff;
-    padding: 20px;
-    margin: 5px;
-    border-radius: 5px;
+    padding: .7em;
+    margin: .2em;
+    border-radius: .2em;
+    font-size: 1.5em;
 }
 
 .title {
     grid-area: title;
-    font-size: 200%;
 }
 
 .footer {
     grid-area: footer;
-    font-size: 200%;
 }
 
 .content {
     display: grid;
     grid-area: content;
-    font-size: 150%;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
         "newUser existingUser";
@@ -68,22 +65,24 @@ button, input{
     background-color: #555;
     border: none;
     color: #fff;
-    font-size: 80%;
-}
-
-#gameBoard button{
-   font-size: 150%;
-   color: #fff;
-   width: 50px;
-   height: 50px;
-   font-weight: 800;
+    font-size: .8em;
 }
 
 button:hover, input:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
-table {
-    margin-left:auto;
-    margin-right:auto;
+@media (max-width: 550px) {
+    .content {
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 100%;
+        grid-template-areas:
+            "newUser"
+            "existingUser";
+    }
+}
+
+.error {
+    font-size: .8em;
+    color: darkred;
 }
