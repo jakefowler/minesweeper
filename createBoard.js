@@ -214,5 +214,5 @@ function logOut()
 function leaveToHighScore()
 {
     pauseGame(true);
-    window.location.replace("highscores.php");
+    window.location.replace("highscores.html");
 }
