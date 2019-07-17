@@ -1,6 +1,6 @@
 # Minesweeper
 
-Hosted at http://www.ezekielnewren.com/minesweeper/
+Hosted at https://www.ezekielnewren.com/minesweeper/
 
 The site needs the following requirements:
 
