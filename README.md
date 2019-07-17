@@ -1,5 +1,8 @@
 # Minesweeper
-Make a shared group project.  All code should be shared using a git repository.   The site needs to also be publicly hosted somewhere.  The site needs the following requirements:
+
+Hosted at http://www.ezekielnewren.com/minesweeper/
+
+The site needs the following requirements:
 
 A user login system
 * An option to register a new user
