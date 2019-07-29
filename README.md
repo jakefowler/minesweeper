@@ -2,7 +2,7 @@
 
 Hosted at https://www.ezekielnewren.com/minesweeper/
 
-![Minesweeper](/minesweeper/screenshots/minesweeper.PNG)
+![Minesweeper](/screenshots/minesweeper.PNG)
 
 The site needs the following requirements:
 
